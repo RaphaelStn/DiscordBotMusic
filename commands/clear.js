@@ -3,8 +3,8 @@ const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName("resume")
-        .setDescription("remets la chanson"),
+        .setName("clear")
+        .setDescription("Clean le chat de 10"),
     execute: async ({client, interaction}) => {
         const queue = client.player.nodes.create(interaction.guild);
 
@@ -13,8 +13,6 @@ module.exports = {
             return
         }
 
-        queue.setPause(false);
-
-        await interaction.reply("Chanson reprise")
+        await interaction.channel.bulkDelete(10)
     }
 }

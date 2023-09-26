@@ -38,7 +38,7 @@ client.player = new Player (client, {
         highWaterMark: 1 << 25
     }
 });
-
+client.player.extractors.loadDefault();
 client.on("ready", () => {
     const guild_ids = client.guilds.cache.map(guild => guild.id);
 

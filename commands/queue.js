@@ -6,9 +6,9 @@ module.exports = {
         .setName("queue")
         .setDescription("Affiche la file"),
     execute: async ({client, interaction}) => {
-        const queue = client.player.getQueue(interaction.guild); 
+        const queue = client.player.nodes.create(interaction.guild); 
 
-        if(!queue || !queue.playing) {
+        if(!queue || !queue.isPlaying()) {
             await interaction.reply("pas de chanson en cours yada yada")
             return
         }

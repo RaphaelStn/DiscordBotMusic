@@ -6,7 +6,7 @@ module.exports = {
         .setName("pause")
         .setDescription("mets en pause la chanson"),
     execute: async ({client, interaction}) => {
-        const queue = client.player.getQueue(interaction.guild);
+        const queue = client.player.nodes.create(interaction.guild);
 
         if(!queue) {
             await interaction.reply("Pas de chanson en cours")
