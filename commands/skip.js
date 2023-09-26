@@ -1,26 +1,23 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, Options } = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("skip")
         .setDescription("Skip la chanson"),
     execute: async ({client, interaction}) => {
-        const queue = client.player.getQueue(interaction.guild);
+        const queue = client.player.nodes.create(interaction.guild);
 
         if(!queue) {
             await interaction.reply("Pas de chanson en cours")
             return
         }
-        const currentSong = queue.current;
-
-        queue.skip();
+        await queue.history.next();
 
         await interaction.reply({
             embeds: [
                 new EmbedBuilder()
-                    .setDescription(`**${currentSong.title}** passée`)
-                    .setThumbnail(currentSong.thumbnail)
+                    .setDescription(`Chanson passée`)
             ]
         })
     }

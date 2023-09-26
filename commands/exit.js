@@ -13,7 +13,7 @@ module.exports = {
             return
         }
 
-        queue.destroy();
+        queue.delete();
 
         await interaction.reply("Apocalypse fin du game")
     }
