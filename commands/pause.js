@@ -3,8 +3,8 @@ const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName("clear")
-        .setDescription("Clean le chat de 10"),
+        .setName("pause")
+        .setDescription("pause la chanson"),
     execute: async ({client, interaction}) => {
         const queue = client.player.nodes.create(interaction.guild);
 
@@ -12,7 +12,13 @@ module.exports = {
             await interaction.reply("Pas de chanson en cours")
             return
         }
+        await queue.node.pause();
 
-        await interaction.channel.bulkDelete(10)
+        await interaction.reply({
+            embeds: [
+                new EmbedBuilder()
+                    .setDescription(`Chanson en pause`)
+            ]
+        })
     }
 }

@@ -7,16 +7,6 @@ module.exports = {
     .setName("play")
     .setDescription("Joue une chanson")
     .addSubcommand(subcommand => 
-         subcommand.setName("search")
-        .setDescription("Recherche une chanson")
-        .addStringOption(option => 
-             option
-                .setName('searchterms')
-                .setDescription("Mot-clés")
-                .setRequired(true)
-        )
-    )
-    .addSubcommand(subcommand => 
          subcommand.setName("playlist")
         .setDescription("Joue une playlist YT")
         .addStringOption(option => 
@@ -26,6 +16,16 @@ module.exports = {
                 .setRequired(true)
         )
     )
+    .addSubcommand(subcommand => 
+        subcommand.setName("recherche")
+       .setDescription("Recherche une chanson")
+       .addStringOption(option => 
+            option
+               .setName('keyword')
+               .setDescription("Recherche")
+               .setRequired(true)
+       )
+   )
     .addSubcommand(subcommand => 
          subcommand.setName("chanson")
         .setDescription("Joue une chanson YT")
@@ -51,7 +51,6 @@ module.exports = {
         // requête play chanson avec URL
         if(interaction.options.getSubcommand() === "chanson") {
             let url = interaction.options.getString("url");
-            console.log(url)
             const result = await client.player.search(url, {
                 requestedBy: interaction.user,
                 searchEngine: QueryType.YOUTUBE,
@@ -84,13 +83,12 @@ module.exports = {
                 .setDescription(`**[${playlist.title}]** ajouté à la file`)
                 .setThumbnail(playlist.thumbnail)
                 .setFooter({text: `Durée: ${playlist.duration}`})
-        }
-        // requête play search avec URL
-        else if(interaction.options.getSubcommand() === "search") {
-            let url = interaction.options.getString("searchterms");
-            const result = await client.player.search(url, {
+        }        
+        else if(interaction.options.getSubcommand() === "recherche") {
+            let keyword = interaction.options.getString("keyword");
+            const result = await client.player.search(keyword, {
                 requestedBy: interaction.user,
-                searchEngine: QueryType.AUTO,
+                searchEngine: QueryType.YOUTUBE_AUTO,
             });
             if(result.tracks.length === 0) {
                 await interaction.reply("Pas de résultat")
@@ -98,16 +96,14 @@ module.exports = {
             }
             const song = result.tracks[0]
             await queue.play(song);
-
             embed
                 .setDescription(`**[${song.title}]** ajouté à la file`)
                 .setThumbnail(song.thumbnail)
                 .setFooter({text: `Durée: ${song.duration}`})
         }
+        // requête play search avec URL
         await interaction.reply({
             embeds: [embed]
         })
     }
 }
-
-//TODO FIX RESUME PAUSE SKIP EXIT PLAYLIST SEARCH
