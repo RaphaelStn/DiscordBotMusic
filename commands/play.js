@@ -83,7 +83,7 @@ module.exports = {
                 .setDescription(`**[${playlist.title}]** ajouté à la file`)
                 .setThumbnail(playlist.thumbnail)
                 .setFooter({text: `Durée: ${playlist.duration}`})
-        }        
+        }
         else if(interaction.options.getSubcommand() === "recherche") {
             let keyword = interaction.options.getString("keyword");
             const result = await client.player.search(keyword, {
